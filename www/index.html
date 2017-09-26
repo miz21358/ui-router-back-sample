@@ -18,13 +18,14 @@
 			<!-- ツールバー左 -->
 			<div class="left" ng-controller="BackController">
                 <!-- 戻るボタン -->
+                <!-- 画面スタックが1件以上ある場合のみ、アイコンを表示する -->
                 <ons-back-button ng-show="$root.pages.length > 0" ng-click="backNavi();">
                     Back
                 </ons-back-button>
 			</div>
 			<!-- ツールバー真ん中 -->
 			<div class="center">
-				戻る
+				戻る機能
 			</div>
 			<!-- ツールバー右 -->
 			<div class="right">

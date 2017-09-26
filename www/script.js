@@ -47,7 +47,9 @@ myApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $
 // ツールバーのコントローラの割り当て
 myApp.controller('BackController', ['$rootScope', '$scope', '$state', function($rootScope, $scope, $state) {
     
+    // ツールバーの戻るアイコン押下時の処理
 	$scope.backNavi = function() {
+        // 戻る処理実行
 		console.log("backNavi");
 		stateBack($rootScope, $state, null);
 	};	
@@ -58,9 +60,9 @@ myApp.controller('BackController', ['$rootScope', '$scope', '$state', function($
 myApp.run(['$rootScope', '$transitions', '$state', function($rootScope, $transitions, $state){
     // main 画面への遷移（初期表示）
     $transitions.onSuccess({to: 'main'}, function(trans){
-		// インデックスページ読み込み成功
+		// main画面読み込み成功
 		
-		// ページスタック初期化
+		// 画面スタック初期化
 		$rootScope.pages = [];
 	});
 	
@@ -70,7 +72,7 @@ myApp.run(['$rootScope', '$transitions', '$state', function($rootScope, $transit
 		console.log("$transitions.onBefore: "+ trans.$from() +" -> "+ trans.$to() +" / "+ trans.params());
 		
 		if (trans.$from() != trans.$to()) {
-			// ページスタック
+			// 遷移情報（from→toの両方を保持）を画面スタック
 			$rootScope.pages.push(trans);
 			
 			console.log("push: "+ trans.$to());
@@ -79,6 +81,7 @@ myApp.run(['$rootScope', '$transitions', '$state', function($rootScope, $transit
 	
     // Android の戻るキー押下時処理
 	document.addEventListener("backbutton", function(e){
+        // 戻る処理実行（イベントを引き継ぐ）
 		console.log("backbutton");
 		stateBack($rootScope, $state, e)
 	}, false);
@@ -97,7 +100,7 @@ var stateBack = function($rootScope, $state, e) {
 		e.preventDefault();
 	}
 	
-	// ステートを変更する
+	// 現在のステート
 	console.log("current: "+ $state.current);
 	console.log("current.name: "+ $state.current.name);
 	console.log("current.url: "+ $state.current.url);
@@ -110,18 +113,19 @@ var stateBack = function($rootScope, $state, e) {
 		navigator.app.exitApp();
 	}
 	else {
-		// 最新の遷移情報を取得する
+		// 最新の遷移情報（from→toの両方を保持）を取得する
 		var current = $rootScope.pages[$rootScope.pages.length - 1];
-		// ページスタックをポップする
+		// 画面スタックをポップする
 		$rootScope.pages.pop();
 		
     	console.log("* back: "+ $state.current.name + " => "+ current);
 		
-		// 戻る方向の遷移させる（パラメータも設定する）
+        // 最新の遷移情報のfromを元に、戻る方向（前画面）の遷移を実行する
 		$state.go(current.$from().name, current.$from().params);
 		// 遷移して追加されたので除去しておく
 		$rootScope.pages.pop();
 		
+        // 戻る処理実行後のステート
 		console.log("current: "+ $state.current);
 		console.log("current.name: "+ $state.current.name);
 		console.log("current.url: "+ $state.current.url);
