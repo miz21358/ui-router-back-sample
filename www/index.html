@@ -12,83 +12,131 @@
 </head>
 <body ng-app="MyApp">
 
-	<ons-page>
-		<!-- ツールバー -->
-		<ons-toolbar>
-			<!-- ツールバー左 -->
-			<div class="left" ng-controller="BackController">
+    <ons-page>
+        <!-- ツールバー -->
+        <ons-toolbar>
+            <!-- ツールバー左 -->
+            <div class="left" ng-controller="BackController">
                 <!-- 戻るボタン -->
                 <!-- 画面スタックが1件以上ある場合のみ、アイコンを表示する -->
                 <ons-back-button ng-show="$root.pages.length > 0" ng-click="backNavi();">
                     Back
                 </ons-back-button>
-			</div>
-			<!-- ツールバー真ん中 -->
-			<div class="center">
-				戻る機能
-			</div>
-			<!-- ツールバー右 -->
-			<div class="right">
-				<!-- 何も記載しない場合は、空文字を入れる。（入れないとセンタリングレイアウトがずれる） -->
-				&nbsp;
-			</div>				
-		</ons-toolbar>
-		<!-- コンテンツ部分 -->
-		<div style="padding: 20px 10px;" ui-view>
-		</div>
+            </div>
+            <!-- ツールバー真ん中 -->
+            <div class="center" style="text-align: center;">
+                [Back]
+            </div>
+            <!-- ツールバー右 -->
+            <div class="right">
+                <!-- 何も記載しない場合は、空文字を入れる。（入れないとセンタリングレイアウトがずれる） -->
+                &nbsp;
+            </div>              
+        </ons-toolbar>
+        <!-- コンテンツ部分 -->
+        <div ui-view></div>
+        <!-- ナビゲーター（実際には表示しない） -->
+        <ons-navigator var="navi">
+        </ons-navigator>
+    </ons-page>
 
-	</ons-page>
-    
+    <!-- 初期表示画面 -->
     <ons-template id="main.html">
-        <ons-button ui-sref="page-A">pageA</ons-button>
+    	<ons-page ng-class="contents">
+	        <ons-button ui-sref="page-A">pageA</ons-button>
+    	</ons-page>
     </ons-template>
-    
+
     <ons-template id="pageA.html">
-        <div>
-            pageAだよ
-            
-            <ul>
-                <li><a ui-sref="page-A-1">pageA-①</a></li>
-                <li><a ui-sref="page-A-2">pageA-②</a></li>
-            </ul>
-        </div>
+    	<!-- navigatorに詰めるHTMLはons-pageタグで囲む -->
+    	<ons-page ng-class="contents">
+	        <div>
+	            pageAだよ
+	
+	            <ul>
+	                <li><a ui-sref="page-A-1">pageA-①</a></li>
+	                <li><a ui-sref="page-A-2">pageA-②</a></li>
+	            </ul>
+	            
+	            pageAの入れ子だよ
+	
+	            <ul>
+	                <li><a ui-sref=".page-A-sub1">pageA-sub①</a></li>
+	                <li><a ui-sref=".page-A-sub2">pageA-sub②</a></li>
+	            </ul>
+	            
+	            <div ui-view></div>
+	        </div>
+    	</ons-page>
     </ons-template>
     
+    <ons-template id="page-A-sub1.html">
+    	pageAの入れ子①だよ
+    </ons-template>
+    
+    <ons-template id="page-A-sub2.html">
+    	pageAの入れ子②だよ
+    </ons-template>
+
     <ons-template id="pageA-1.html">
-        <div>
-            pageA-①だよ
-            
-            <ul>
-                <li><a ui-sref="page-A-1-1">pageA-①-①</a></li>
-                <li><a ui-sref="page-A-1-2">pageA-①-②</a></li>
-            </ul>
-        </div>
+    	<ons-page ng-class="contents">
+	        <div>
+	            pageA-①だよ
+	
+	            <ul>
+	                <li><a ui-sref="page-A-1-1">pageA-①-①</a></li>
+	                <li><a ui-sref="page-A-1-2">pageA-①-②</a></li>
+	            </ul>
+	        </div>
+        </ons-page>
     </ons-template>
 
     <ons-template id="pageA-2.html">
-        pageA-②だよ
-                    
-        <ul>
-            <li><a ui-sref="page-A-2-1">pageA-②-①</a></li>
-            <li><a ui-sref="page-A-2-2">pageA-②-②</a></li>
-        </ul>
+    	<ons-page ng-controller="PageA2Controller" ng-class="contents">
+	        値受け渡し
+	        
+			<p>
+				<ons-input modifier="underbar" ng-model="sample" placeholder="テストデータ" float></ons-input>
+			</p>
+			
+	        <hr>
+	        pageA-②だよ
+	
+	        <ul>
+	            <li><ons-button ng-click="jump('page-A-2-1');">pageA-②-①</ons-button> そのまま表示</li>
+	            <li><ons-button ng-click="jump('page-A-2-2');">pageA-②-①</ons-button>　計算表示</li>
+	        </ul>
+	        
+        </ons-page>
     </ons-template>
 
     <ons-template id="pageA-1-1.html">
-        pageA-①-①だよ        
+    	<ons-page ng-class="contents">
+	        pageA-①-①だよ        
+        </ons-page>
     </ons-template>
-    
+
     <ons-template id="pageA-1-2.html">
-        pageA-①-②だよ        
+    	<ons-page ng-class="contents">
+	        pageA-①-②だよ        
+        </ons-page>
     </ons-template>
 
     <ons-template id="pageA-2-1.html">
-        pageA-②-①だよ        
+    	<ons-page ng-controller="PageA21Controller" ng-class="contents">
+	        pageA-②-①だよ
+	        
+	        <p>{{sample}}</p>
+    	</ons-page>
     </ons-template>
-    
+
     <ons-template id="pageA-2-2.html">
-        pageA-②-②だよ        
+    	<ons-page ng-controller="PageA22Controller" ng-class="contents">
+	        pageA-②-②だよ        
+	        
+	        <p>{{result}}</p>
+        </ons-page>
     </ons-template>
-    	
-</body>	
+
+</body> 
 </html>

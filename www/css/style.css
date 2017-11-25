@@ -1,2 +1,8 @@
-/**/
-
+/** 実際には使わないので、navigatorを非表示にしておく。 */
+ons-navigator {
+    display: none;
+}
+/** コンテンツのスタイル */
+div.page__content {
+	padding: 20px 10px;
+}
